@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct MAD_A3App: App {
+struct MemoryGameApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainGameView()
         }
     }
 }

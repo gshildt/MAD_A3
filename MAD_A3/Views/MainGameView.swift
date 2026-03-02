@@ -13,15 +13,15 @@ struct MainGameView: View {
                 
                 if isLandscape {
                     HStack {
-                        cardGrid(size: geo.size, isLandscape: true)
-                        ControlPanel(gameViewModel: gameViewModel)
+                        cardGrid(size: geo.size, isLandscape: true, viewModel: gameViewModel)
+                        ControlPanel(viewModel: gameViewModel)
                             .frame(width: geo.size.width * 0.3)
                             .padding()
                     }
                 } else {
                     VStack {
-                        cardGrid(size: geo.size, isLandscape: false)
-                        ControlPanel(gameViewModel: gameViewModel)
+                        cardGrid(size: geo.size, isLandscape: false, viewModel: gameViewModel)
+                        ControlPanel(viewModel: gameViewModel)
                             .padding()
                     }
                 }
@@ -30,7 +30,7 @@ struct MainGameView: View {
         }
     }
     
-    private func cardGrid(size: CGSize, isLandscape: Bool) -> some View {
+    private func cardGrid(size: CGSize, isLandscape: Bool, viewModel: CardGameViewModel) -> some View {
         let minWidth: CGFloat = isLandscape ? 100 : 80
         
         let columns = [
@@ -39,13 +39,12 @@ struct MainGameView: View {
         
         return ScrollView {
             LazyVGrid(columns: columns, spacing: 10) {
-                ForEach(gameViewModel.cards) { card in
-                    CardView(viewModel: gameViewModel, card: card)
-                        .aspectRatio(2/3, contentMode: .fit)
-                        .padding(4)
+                ForEach(viewModel.cards.indices, id: \.self) { index in
+                    CardView(card: .constant(viewModel.cards[index]), viewModel: gameViewModel)
                 }
             }
             .padding()
         }
     }
 }
+

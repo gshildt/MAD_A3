@@ -31,19 +31,19 @@ struct MainGameView: View {
     }
     
     private func cardGrid(size: CGSize, isLandscape: Bool, viewModel: CardGameViewModel) -> some View {
-        let minWidth: CGFloat = isLandscape ? 100 : 80
         
-        let columns = [
-            GridItem(.adaptive(minimum: minWidth), spacing: 10)
-        ]
+        let spacing: CGFloat = isLandscape ? 5 : 10
+        let cardWidth = isLandscape ? size.width / 8 - 10 : (size.width / 8 - 10) * 2
+        let columns = Array(repeating: GridItem(.fixed(cardWidth), spacing: spacing), count: 4)
+        let padding = isLandscape ? spacing : 10
         
         return ScrollView {
-            LazyVGrid(columns: columns, spacing: 10) {
+            LazyVGrid(columns: columns, spacing: spacing) {
                 ForEach(viewModel.cards.indices, id: \.self) { index in
-                    CardView(card: .constant(viewModel.cards[index]), viewModel: gameViewModel)
+                    CardView(card: $gameViewModel.cards[index], viewModel: gameViewModel)
                 }
             }
-            .padding()
+            .padding(padding)
         }
     }
 }
